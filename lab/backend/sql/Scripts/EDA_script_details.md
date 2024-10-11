@@ -94,3 +94,26 @@ FROM trafikkalla.diagramdata
 WHERE 
 	Trafikkälla = 'YouTube-sökning'
 ORDER BY Visningar DESC;
+
+# 12 Check views per operating system
+SELECT
+	Operativsystem, 
+	count(*) AS total_rows,
+	sum(Visningar) as total_visningar
+From
+	operativsystem.diagramdata
+WHERE Visningar > 0
+GROUP BY
+	Operativsystem 
+ORDER BY total_visningar DESC;
+
+# 13 Pivot to display operating system views per date
+PIVOT (
+	SELECT
+	STRFTIME('%Y-%m-%d', Datum) Datum,
+	Operativsystem,
+	Visningar
+FROM operativsystem.diagramdata)
+ON Operativsystem
+USING sum(Visningar)
+ORDER BY Datum;
