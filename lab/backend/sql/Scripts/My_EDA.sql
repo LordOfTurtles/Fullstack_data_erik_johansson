@@ -1,4 +1,3 @@
-desc;
 
 WITH 
 	date_table AS (SELECT * FROM datum.tabelldata OFFSET 1),
@@ -28,30 +27,14 @@ FROM
 	innehall.tabelldata
 ORDER BY "visningstid (timmar)" DESC OFFSET 1;
 
+-- Check 10 most common operating systems among viewers;
 SELECT
 	*
 FROM
 	operativsystem.tabelldata
 ORDER BY Visningar DESC LIMIT 10;
 
-SELECT 
-	*
-FROM 
-	prenumerationskalla.diagramdata;
-
-SELECT 
-	*
-FROM 
-	prenumerationsstatus.diagramdata
-WHERE Prenumerationsstatus = 'Prenumererar inte';
-
-
-SELECT 
-	*
-FROM 
-	enhetstyp.tabelldata
-ORDER BY Visningar DESC;
-
+-- Compare subscribed, non-subscribed and total viewers per date;
 WITH
 	subs_table AS (SELECT * FROM prenumerationsstatus.diagramdata WHERE Prenumerationsstatus = 'Prenumererar'),
 	nonsubs_table AS (SELECT * FROM prenumerationsstatus.diagramdata WHERE Prenumerationsstatus = 'Prenumererar inte'),
@@ -67,9 +50,34 @@ LEFT JOIN nonsubs_table as nonsub
 ON sub.datum = nonsub.datum
 LEFT JOIN date_total as tot
 ON sub.datum = tot.datum;
-	
-	
-	
 
+-- Check most common countries of viewers
+SELECT
+	* EXCLUDE ("Visningstid (timmar)", "Genomsnittlig visningslängd")
+FROM geografi.tabelldata OFFSET 1;
 
+-- Check which dates had views from known cities
+SELECT 
+	* EXCLUDE (Städer)
+FROM stader.diagramdata
+WHERE Visningar > 0;
+
+-- Check gender demographics for viewers
+SELECT 
+	*
+FROM tittare.tabelldata_kon;
+
+-- Gender and age tables had wrong names so swapped them around
+-- ALTER TABLE tittare.tabelldata_alder
+-- RENAME TO tabelldata_kon_temp;
+
+-- ALTER TABLE tittare.tabelldata_kon
+-- RENAME TO tabelldata_alder;
+
+-- ALTER TABLE tittare.tabelldata_kon_temp
+-- RENAME TO tabelldata_kon;
+
+SELECT 
+	*
+FROM tittare.tabelldata_kon;
 
