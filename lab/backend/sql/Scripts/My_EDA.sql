@@ -34,6 +34,42 @@ FROM
 	operativsystem.tabelldata
 ORDER BY Visningar DESC LIMIT 10;
 
+SELECT 
+	*
+FROM 
+	prenumerationskalla.diagramdata;
+
+SELECT 
+	*
+FROM 
+	prenumerationsstatus.diagramdata
+WHERE Prenumerationsstatus = 'Prenumererar inte';
+
+
+SELECT 
+	*
+FROM 
+	enhetstyp.tabelldata
+ORDER BY Visningar DESC;
+
+WITH
+	subs_table AS (SELECT * FROM prenumerationsstatus.diagramdata WHERE Prenumerationsstatus = 'Prenumererar'),
+	nonsubs_table AS (SELECT * FROM prenumerationsstatus.diagramdata WHERE Prenumerationsstatus = 'Prenumererar inte'),
+	date_total AS (SELECT * FROM datum.totalt)
+SELECT
+	STRFTIME('%Y-%m-%d', sub.datum) Datum,
+	sub.visningar "Visningar av prenumeranter",
+	nonsub.visningar "Visningar av icke-prenumeranter",
+	tot.visningar
+FROM
+	subs_table as sub
+LEFT JOIN nonsubs_table as nonsub
+ON sub.datum = nonsub.datum
+LEFT JOIN date_total as tot
+ON sub.datum = tot.datum;
+	
+	
+	
 
 
 
