@@ -31,5 +31,12 @@ class ContentKPI:
 
 
 # create more KPIs here
-class DeviceKPI:
-    pass 
+class OSKPI:
+    def __init__(self) -> None:
+        self._operating_system = QueryDatabase("SELECT * FROM marts.OS_summary OFFSET 1;").df
+
+    def display_OS_stats(self):
+        df = self._operating_system
+        st.markdown("## Vanligaste operativsystem")
+        st.markdown("Nedan visas en lista på vilka operativssystem som används mest av tittare")
+        st.dataframe(df)
