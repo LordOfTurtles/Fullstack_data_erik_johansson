@@ -37,3 +37,28 @@ class OSTrend:
         )
         st.plotly_chart(fig)
 
+class SubscriberTrend:
+    def __init__(self) -> None:
+        self.df = QueryDatabase("SELECT * FROM marts.subscriber_views_per_date").df
+
+    def display_plots(self):
+        df = self.df
+        st.header("Visningar för senaste månaden sorterade efter prenumerantstatus")
+        sub_option = st.selectbox("Välj alternativ", df.columns[1:3])
+
+        fig = px.line(
+            data_frame=df,
+            x=df["Datum"],
+            y=df[sub_option],
+            title=f"{sub_option} 2024-08-13 - 2024-09-09",
+            labels={"index": "Datum", sub_option: "Visningar"},
+        )
+
+        fig.update_layout(
+           xaxis=dict(showgrid=False,),
+           yaxis=dict(showgrid=False,
+                      tick0 = 0),       
+        )
+        st.plotly_chart(fig)
+
+    
