@@ -1,4 +1,4 @@
--- 1 Check views and viewing hours
+-- 1
 WITH 
 	date_table AS (SELECT * FROM datum.tabelldata OFFSET 1),
 	date_total AS (SELECT * FROM datum.totalt)
@@ -12,7 +12,7 @@ FROM
 LEFT JOIN date_table as tab
 ON tot.datum = tab.datum;
 
--- 2 Check most common devices for viewing videos
+-- 2
 SELECT
 	Enhetstyp, 
 	count(*) AS total_rows,
@@ -23,21 +23,21 @@ GROUP BY
 	Enhetstyp
 ORDER BY total_visningar DESC;
 
--- 3 Check stats per individual video
+-- 3
 SELECT 
 	* EXCLUDE (innehåll)
 FROM
 	innehall.tabelldata
 ORDER BY "visningstid (timmar)" DESC OFFSET 1;
 
--- 4 Check 10 most common operating systems among viewers;
+-- 4
 SELECT
 	*
 FROM
 	operativsystem.tabelldata
 ORDER BY Visningar DESC LIMIT 10;
 
--- 5 Compare subscribed, non-subscribed and total viewers per date;
+-- 5
 WITH
 	subs_table AS (SELECT * FROM prenumerationsstatus.diagramdata WHERE Prenumerationsstatus = 'Prenumererar'),
 	nonsubs_table AS (SELECT * FROM prenumerationsstatus.diagramdata WHERE Prenumerationsstatus = 'Prenumererar inte'),
@@ -54,23 +54,18 @@ ON sub.datum = nonsub.datum
 LEFT JOIN date_total as tot
 ON sub.datum = tot.datum;
 
--- 6 Check most common nationalities of viewers;
+-- 6
 SELECT
 	* EXCLUDE ("Visningstid (timmar)", "Genomsnittlig visningslängd")
 FROM geografi.tabelldata OFFSET 1;
 
--- 7 Check which dates had views from known cities;
+-- 7
 SELECT 
 	* EXCLUDE (Städer)
 FROM stader.diagramdata
 WHERE Visningar > 0;
 
--- 8 Check gender demographics for viewers;
-SELECT 
-	*
-FROM tittare.tabelldata_kon;
-
--- 9 Gender and age tables had wrong names so swapped them around
+-- 8
 -- ALTER TABLE tittare.tabelldata_alder
 -- RENAME TO tabelldata_kon_temp;
 
@@ -80,17 +75,17 @@ FROM tittare.tabelldata_kon;
 -- ALTER TABLE tittare.tabelldata_kon_temp
 -- RENAME TO tabelldata_kon;
 
--- 10 Check gender demographics for viewers
+-- 9
 SELECT 
 	*
 FROM tittare.tabelldata_kon;
 
--- 11 Check age demographics for viewers;
+-- 10
 SELECT
 	*
 FROM tittare.tabelldata_alder;
 
--- 12 Check what days there was most traffic from YouTube searches
+-- 11
 SELECT
 	STRFTIME('%Y-%m-%d', Datum) Datum,
 	Trafikkälla,

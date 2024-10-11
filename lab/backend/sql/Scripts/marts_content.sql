@@ -30,8 +30,6 @@ SELECT
 FROM
 	innehall.totalt);
 
-
-
 SELECT
 	*
 FROM
@@ -49,3 +47,24 @@ SELECT
 	*
 FROM
 	marts.views_per_date;
+
+CREATE TABLE IF NOT EXISTS marts.subscriber_views_per_date AS (
+WITH
+	subs_table AS (SELECT * FROM prenumerationsstatus.diagramdata WHERE Prenumerationsstatus = 'Prenumererar'),
+	nonsubs_table AS (SELECT * FROM prenumerationsstatus.diagramdata WHERE Prenumerationsstatus = 'Prenumererar inte'),
+	date_total AS (SELECT * FROM datum.totalt)
+SELECT
+	STRFTIME('%Y-%m-%d', sub.datum) Datum,
+	sub.visningar "Visningar av prenumeranter",
+	nonsub.visningar "Visningar av icke-prenumeranter",
+	tot.visningar "Totala Visningar"
+FROM
+	subs_table as sub
+LEFT JOIN nonsubs_table as nonsub
+ON sub.datum = nonsub.datum
+LEFT JOIN date_total as tot
+ON sub.datum = tot.datum);
+
+SELECT
+	*
+FROM marts.subscriber_views_per_date;
