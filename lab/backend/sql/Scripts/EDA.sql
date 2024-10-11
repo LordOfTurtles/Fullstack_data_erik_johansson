@@ -2,7 +2,7 @@ WITH
 	date_table AS (SELECT * FROM datum.tabelldata OFFSET 1),
 	date_total AS (SELECT * FROM datum.totalt OFFSET 1)
 SELECT 
-	STRFTIME('%Y-%m-%d', tot.datum), 
+	STRFTIME('%Y-%m-%d', tot.datum) Datum,
 	tot.visningar,
 	tab.visningar,
 	tab."visningstid (timmar)"
