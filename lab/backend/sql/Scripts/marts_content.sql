@@ -68,3 +68,35 @@ ON sub.datum = tot.datum);
 SELECT
 	*
 FROM marts.subscriber_views_per_date;
+
+CREATE TABLE IF NOT EXISTS marts.OS_summary AS (
+SELECT
+	*
+FROM
+	operativsystem.tabelldata
+WHERE Visningar > 0
+ORDER BY Visningar DESC);
+
+SELECT 
+	*
+FROM 
+	marts.OS_summary;
+
+CREATE TABLE IF NOT EXISTS marts.OS_per_date AS (
+PIVOT (
+	SELECT
+	STRFTIME('%Y-%m-%d', Datum) Datum,
+	Operativsystem,
+	Visningar
+FROM operativsystem.diagramdata)
+ON Operativsystem
+USING sum(Visningar)
+ORDER BY Datum);
+
+SELECT
+	*
+FROM 
+	marts.OS_per_date;
+
+
+
