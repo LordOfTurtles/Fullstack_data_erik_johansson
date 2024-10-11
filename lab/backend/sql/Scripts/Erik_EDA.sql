@@ -96,6 +96,7 @@ WHERE
 	Trafikkälla = 'YouTube-sökning'
 ORDER BY Visningar DESC;
 
+-- 12
 SELECT
 	Operativsystem, 
 	count(*) AS total_rows,
@@ -107,13 +108,7 @@ GROUP BY
 	Operativsystem 
 ORDER BY total_visningar DESC;
 
-SELECT
-	STRFTIME('%Y-%m-%d', Datum) Datum,
-	Operativsystem,
-	Visningar
-FROM operativsystem.diagramdata
-WHERE Visningar > 0;
-
+--13
 PIVOT (
 	SELECT
 	STRFTIME('%Y-%m-%d', Datum) Datum,
