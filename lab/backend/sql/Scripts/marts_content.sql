@@ -98,5 +98,15 @@ SELECT
 FROM 
 	marts.OS_per_date;
 
+CREATE TABLE IF NOT EXISTS marts.viewer_ages AS (
+SELECT
+	*
+FROM tittare.tabelldata_alder)
+
+SELECT
+	*
+FROM 
+	marts.viewer_ages;
+
 
 

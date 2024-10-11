@@ -40,3 +40,13 @@ class OSKPI:
         st.markdown("## Vanligaste operativsystem")
         st.markdown("Nedan visas en lista på vilka operativssystem som används mest av tittare")
         st.dataframe(df)
+
+class AgeKPI:
+    def __init__(self) -> None:
+        self._ages = QueryDatabase("SELECT * FROM marts.viewer_ages;").df
+    
+    def display_age_stats(self):
+        df = self._ages
+        st.markdown("## Åldersdemografier")
+        st.markdown("Nedan visas en lista med statistik för olika åldersdemografier")
+        st.dataframe(df)
